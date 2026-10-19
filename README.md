@@ -15,3 +15,7 @@ Live: https://roxyryanentertainment.github.io/StrassAtelier/
 - Materiaallijst met prijzen en tijdschatting, projecten bewaren en delen als bestand
 
 Vormen: [game-icons.net](https://game-icons.net) (CC BY 3.0) en Material Design Icons (Apache 2.0).
+
+## Aanpassen
+
+De code van de site staat versleuteld in `app.enc`. Openzetten: `node maak.mjs open <toegangscode>` (maakt `bron/`). Na aanpassen: `node maak.mjs versleutel <toegangscode>`. De map `bron/` gaat nooit mee naar GitHub.
