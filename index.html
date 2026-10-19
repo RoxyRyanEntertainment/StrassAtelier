@@ -7,7 +7,7 @@
 <meta name="robots" content="noindex">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Atkinson+Hyperlegible:wght@400;700&family=JetBrains+Mono:wght@500&family=Anton&family=Abril+Fatface&family=Playfair+Display:wght@900&family=Fredoka:wght@700&family=Pacifico&family=Great+Vibes&display=swap">
-<link rel="stylesheet" href="style.css?v=20261019e">
+<link rel="stylesheet" href="style.css?v=20261019f">
 </head>
 <body>
 
@@ -403,7 +403,7 @@
 /* toegang: de toepassing staat versleuteld in app.enc en gaat alleen open met de juiste code */
 (function(){
   "use strict";
-  var V = '20261019e', C = window.crypto && crypto.subtle, $ = function(id){ return document.getElementById(id); };
+  var V = '20261019f', C = window.crypto && crypto.subtle, $ = function(id){ return document.getElementById(id); };
   var data = fetch('app.enc?v=' + V).then(function(r){ if (!r.ok) throw new Error('laden'); return r.arrayBuffer(); });
   function b64(u){ var s = ''; u = new Uint8Array(u); for (var i = 0; i < u.length; i++) s += String.fromCharCode(u[i]); return btoa(s); }
   function unb64(s){ var b = atob(s), u = new Uint8Array(b.length); for (var i = 0; i < b.length; i++) u[i] = b.charCodeAt(i); return u; }
