@@ -7,7 +7,7 @@
 <meta name="robots" content="noindex">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Atkinson+Hyperlegible:wght@400;700&family=JetBrains+Mono:wght@500&family=Anton&family=Abril+Fatface&family=Playfair+Display:wght@900&family=Fredoka:wght@700&family=Pacifico&family=Great+Vibes&display=swap">
-<link rel="stylesheet" href="style.css?v=20261019f">
+<link rel="stylesheet" href="style.css?v=20261019g">
 </head>
 <body>
 
@@ -126,24 +126,26 @@
     <details>
       <summary>Afbeelding natekenen in strass</summary>
       <div class="blk">
-        <p class="note">Laad een logo, tekening of foto. Het wordt omgezet naar een vorm die je met stenen vult, of naar kleurvlakken met de juiste steenkleuren.</p>
+        <p class="note">Laad een logo, tekening of foto. Elke steen krijgt de kleur van wat eronder ligt, dus het resultaat lijkt op de afbeelding. Een effen achtergrond wordt overgeslagen.</p>
         <input type="file" id="trFile" accept="image/*">
         <p class="note" id="trLoad">Ook grote foto's en afbeeldingen kunnen (ze worden automatisch verkleind tot wat nodig is).</p>
         <canvas id="trPrev" width="320" height="200" hidden></canvas>
-        <div class="field"><label for="trMode">Manier</label><select id="trMode"><option value="sil">Silhouet (één vorm)</option><option value="col">Per kleur (kleurvlakken)</option><option value="line">Lijntekening (één rij stenen op de lijnen)</option></select></div>
+        <div class="field"><label for="trMode">Manier</label><select id="trMode"><option value="mos">Zoals de afbeelding (aanbevolen)</option><option value="sil">Silhouet (één vorm)</option><option value="col">Per kleur (kleurvlakken)</option><option value="line">Lijntekening (één rij stenen op de lijnen)</option></select></div>
         <div class="field trSil adv"><label for="trPol">Wat is de vorm?</label><select id="trPol"><option value="auto">Automatisch</option><option value="dark">Donkere delen</option><option value="light">Lichte delen</option></select></div>
         <div class="field trSil adv"><label for="trThr">Drempel</label><input type="range" id="trThr" min="10" max="245" value="128"></div>
         <label class="chk trSil adv"><input type="checkbox" id="trAuto" checked> Drempel automatisch</label>
-        <div class="field trCol" hidden><label for="trK">Aantal kleuren (2 tot 30)</label><input type="number" id="trK" min="2" max="30" value="8"></div>
-        <label class="chk trCol" hidden><input type="checkbox" id="trMerge" checked> Kleuren met dezelfde steen samenvoegen</label>
-        <div class="field adv"><label for="trDet">Detail</label><input type="range" id="trDet" min="1" max="7" value="4"></div>
+        <div class="field trMos"><label for="trStone">Steen</label><select id="trStone"><option value="SS6">SS6 (2 mm): heel fijn, veel stenen</option><option value="SS10">SS10 (2,8 mm): fijn</option><option value="SS12">SS12 (3,1 mm)</option><option value="SS16" selected>SS16 (3,9 mm): standaard</option><option value="SS20">SS20 (4,7 mm)</option><option value="SS30">SS30 (6,4 mm): grof</option></select></div>
+        <div class="field trCol" hidden><label for="trK">Aantal kleuren (2 tot 30)</label><input type="number" id="trK" min="2" max="30" value="10"></div>
+        <label class="chk trMos"><input type="checkbox" id="trFine"> Randen tussen kleuren fijner (kleinere stenen op de grens)</label>
+        <label class="chk trColOnly" hidden><input type="checkbox" id="trMerge" checked> Kleuren met dezelfde steen samenvoegen</label>
+        <div class="field adv trNoMos"><label for="trDet">Detail</label><input type="range" id="trDet" min="1" max="7" value="4"></div>
         <div class="field"><label for="trW">Breedte op kostuum (cm)</label><input type="number" id="trW" min="2" max="300" value="20"></div>
-        <div class="field adv"><label for="trName">Naam</label><input type="text" id="trName" maxlength="40" placeholder="bv. logo"></div>
-        <div class="mapping trCol" id="trMap" hidden></div>
-        <label class="chk trCol" hidden><input type="checkbox" id="trEdge" checked> Rand rond elke kleurzone</label>
-        <label class="chk adv"><input type="checkbox" id="trSave" checked> Bewaren bij Eigen vormen</label>
+        <div class="field adv trNoMos"><label for="trName">Naam</label><input type="text" id="trName" maxlength="40" placeholder="bv. logo"></div>
         <div class="row"><button class="btn primary" id="trGo" disabled>Natekenen in strass</button></div>
-        <p class="note" id="trNote">Stenen en kleuren komen uit Rand en vulling hieronder (bij Per kleur kiest de site de steenkleur per vlak).</p>
+        <div class="mapping trCol" id="trMap" hidden></div>
+        <label class="chk trColOnly" hidden><input type="checkbox" id="trEdge" checked> Rand rond elke kleurzone</label>
+        <label class="chk adv trNoMos"><input type="checkbox" id="trSave" checked> Bewaren bij Eigen vormen</label>
+        <p class="note" id="trNote">Onder de knop kan je per kleurvlak een andere steenkleur kiezen.</p>
       </div>
     </details>
 
@@ -403,7 +405,7 @@
 /* toegang: de toepassing staat versleuteld in app.enc en gaat alleen open met de juiste code */
 (function(){
   "use strict";
-  var V = '20261019f', C = window.crypto && crypto.subtle, $ = function(id){ return document.getElementById(id); };
+  var V = '20261019g', C = window.crypto && crypto.subtle, $ = function(id){ return document.getElementById(id); };
   var data = fetch('app.enc?v=' + V).then(function(r){ if (!r.ok) throw new Error('laden'); return r.arrayBuffer(); });
   function b64(u){ var s = ''; u = new Uint8Array(u); for (var i = 0; i < u.length; i++) s += String.fromCharCode(u[i]); return btoa(s); }
   function unb64(s){ var b = atob(s), u = new Uint8Array(b.length); for (var i = 0; i < b.length; i++) u[i] = b.charCodeAt(i); return u; }
