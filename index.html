@@ -7,7 +7,7 @@
 <meta name="robots" content="noindex">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Atkinson+Hyperlegible:wght@400;700&family=JetBrains+Mono:wght@500&family=Anton&family=Abril+Fatface&family=Playfair+Display:wght@900&family=Fredoka:wght@700&family=Pacifico&family=Great+Vibes&display=swap">
-<link rel="stylesheet" href="style.css?v=20261019h">
+<link rel="stylesheet" href="style.css?v=20261019i">
 </head>
 <body>
 
@@ -60,6 +60,7 @@
       <p class="lbl" id="qFor">Steen</p>
       <div class="qsizes" id="qSizes"></div>
       <details class="sub"><summary>Andere steen (druppel, rivoli, parel...)</summary><select id="qType" class="tsel" aria-label="Andere steen"></select></details>
+      <details class="sub"><summary>Welke ronde maten gebruik je?</summary><p class="note">De site gebruikt zelf alleen deze maten (ook voor vullen en natekenen).</p><div id="mySizes" class="mysizes"></div></details>
       <p class="lbl">Kleur</p>
       <div class="qcols" id="qCols"></div>
       <details class="sub"><summary>Alle kleuren</summary><div class="qcols" id="qColsAll"></div></details>
@@ -134,9 +135,9 @@
         <div class="field trSil adv"><label for="trPol">Wat is de vorm?</label><select id="trPol"><option value="auto">Automatisch</option><option value="dark">Donkere delen</option><option value="light">Lichte delen</option></select></div>
         <div class="field trSil adv"><label for="trThr">Drempel</label><input type="range" id="trThr" min="10" max="245" value="128"></div>
         <label class="chk trSil adv"><input type="checkbox" id="trAuto" checked> Drempel automatisch</label>
-        <div class="field trMos"><label for="trStone">Steen</label><select id="trStone"><option value="SS6">SS6 (2 mm): heel fijn, veel stenen</option><option value="SS10">SS10 (2,8 mm): fijn</option><option value="SS12">SS12 (3,1 mm)</option><option value="SS16" selected>SS16 (3,9 mm): standaard</option><option value="SS20">SS20 (4,7 mm)</option><option value="SS30">SS30 (6,4 mm): grof</option></select></div>
+        <div class="field trMos"><label for="trStone">Steen</label><select id="trStone"></select></div>
         <div class="field trCol" hidden><label for="trK">Aantal kleuren (2 tot 50)</label><input type="number" id="trK" min="2" max="50" value="10"></div>
-        <label class="chk trMos"><input type="checkbox" id="trFine"> Randen tussen kleuren fijner (kleinere stenen op de grens)</label>
+<input type="checkbox" id="trFine" hidden>
         <label class="chk trColOnly" hidden><input type="checkbox" id="trMerge" checked> Kleuren met dezelfde steen samenvoegen</label>
         <div class="field adv trNoMos"><label for="trDet">Detail</label><input type="range" id="trDet" min="1" max="7" value="4"></div>
         <div class="field"><label for="trW">Breedte op kostuum (cm)</label><input type="number" id="trW" min="2" max="300" value="20"></div>
@@ -405,7 +406,7 @@
 /* toegang: de toepassing staat versleuteld in app.enc en gaat alleen open met de juiste code */
 (function(){
   "use strict";
-  var V = '20261019h', C = window.crypto && crypto.subtle, $ = function(id){ return document.getElementById(id); };
+  var V = '20261019i', C = window.crypto && crypto.subtle, $ = function(id){ return document.getElementById(id); };
   var data = fetch('app.enc?v=' + V).then(function(r){ if (!r.ok) throw new Error('laden'); return r.arrayBuffer(); });
   function b64(u){ var s = ''; u = new Uint8Array(u); for (var i = 0; i < u.length; i++) s += String.fromCharCode(u[i]); return btoa(s); }
   function unb64(s){ var b = atob(s), u = new Uint8Array(b.length); for (var i = 0; i < b.length; i++) u[i] = b.charCodeAt(i); return u; }
