@@ -1,0 +1,451 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Strass Atelier</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Atkinson+Hyperlegible:wght@400;700&family=JetBrains+Mono:wght@500&family=Anton&family=Abril+Fatface&family=Playfair+Display:wght@900&family=Fredoka:wght@700&family=Pacifico&family=Great+Vibes&display=swap">
+<link rel="stylesheet" href="style.css?v=20261019e">
+</head>
+<body>
+
+<!-- ======= TOEGANG ======= -->
+<div id="gate">
+  <form id="gateForm" autocomplete="off">
+    <svg width="54" height="54" viewBox="0 0 34 34" aria-hidden="true"><circle cx="17" cy="17" r="15" fill="var(--accent)"/><polygon points="17,6 25,11 28,17 25,23 17,28 9,23 6,17 9,11" fill="none" stroke="#fff" stroke-width="1.4" opacity=".8"/><ellipse cx="12" cy="11" rx="3.4" ry="2" fill="#fff" opacity=".85" transform="rotate(-35 12 11)"/></svg>
+    <h1>Strass Atelier</h1>
+    <label for="gateCode">Toegangscode</label>
+    <input id="gateCode" type="password" inputmode="numeric" autocomplete="off" required>
+    <label class="chk"><input type="checkbox" id="gateRemember" checked> Onthoud op dit toestel</label>
+    <button class="btn primary" type="submit">Openen</button>
+    <p id="gateMsg" class="note warn" hidden>Die code klopt niet.</p>
+  </form>
+</div>
+
+<div id="app" hidden>
+<header class="top">
+  <div class="brand">
+    <svg width="34" height="34" viewBox="0 0 34 34" aria-hidden="true"><circle cx="17" cy="17" r="15" fill="var(--accent)"/><polygon points="17,6 25,11 28,17 25,23 17,28 9,23 6,17 9,11" fill="none" stroke="var(--accent-ink)" stroke-width="1.4" opacity=".8"/><polygon points="17,11 22,14 22,20 17,23 12,20 12,14" fill="var(--accent-ink)" opacity=".35"/><ellipse cx="12" cy="11" rx="3.4" ry="2" fill="#fff" opacity=".85" transform="rotate(-35 12 11)"/></svg>
+    <div><h1>Strass Atelier</h1><small id="projName">Naamloos ontwerp</small></div>
+  </div>
+  <nav class="tabs" role="tablist" aria-label="Onderdelen">
+    <button role="tab" aria-selected="true" data-pane="ontwerp">Ontwerp</button>
+    <button role="tab" aria-selected="false" data-pane="foto" class="adv">Foto naar strass</button>
+    <button role="tab" aria-selected="false" data-pane="proj">Projectie</button>
+    <button role="tab" aria-selected="false" data-pane="mat">Materiaal</button>
+    <button role="tab" aria-selected="false" data-pane="proj2">Projecten</button>
+  </nav>
+  <button class="btn modebtn" id="modeBtn" type="button" title="Wissel tussen eenvoudig en alle opties">Meer opties</button>
+</header>
+
+<!-- ======= ONTWERP ======= -->
+<main class="pane" id="pane-ontwerp">
+  <aside class="ctrl">
+    <div class="elpanel" id="elPanel" hidden></div>
+    <details class="sub ellist" id="elListBox" hidden><summary>Delen van je ontwerp (<span id="elListN">0</span>)</summary><div class="chips" id="elList"></div><p class="note">Tik een deel aan om het aan te passen. Of tik op het werkvlak op een vorm met Selecteren.</p></details>
+    <div class="howto simple-only">
+      <b>Zo werkt het</b>
+      <ol>
+        <li>Kies de lagen: tik een laag aan en kies er steen en kleur voor. Meer lagen geeft een ster in een ster in een ster.</li>
+        <li>Typ wat je wil en klik op Tekenen, of tik een vorm aan.</li>
+        <li>Iets mis? Klik op Terug of op Alles wissen boven het werkvlak.</li>
+      </ol>
+    </div>
+    <div class="blk quick simple-only">
+      <p class="lbl">Lagen, van buiten naar binnen</p>
+      <div class="layers" id="layerList"></div>
+      <div class="row"><button class="btn" id="layerAdd" type="button">+ Laag erbij</button><button class="btn" id="layerAlt" type="button" title="Herhaal de lagen tot er 6 zijn, bv. AB, crystal, AB, crystal...">Afwisselend herhalen</button></div>
+      <p class="lbl" id="qFor">Steen</p>
+      <div class="qsizes" id="qSizes"></div>
+      <details class="sub"><summary>Andere steen (druppel, rivoli, parel...)</summary><select id="qType" class="tsel" aria-label="Andere steen"></select></details>
+      <p class="lbl">Kleur</p>
+      <div class="qcols" id="qCols"></div>
+      <details class="sub"><summary>Alle kleuren</summary><div class="qcols" id="qColsAll"></div></details>
+      <p class="note" id="qNote"></p>
+    </div>
+    <details open>
+      <summary>Patroon tekenen</summary>
+      <div class="blk">
+        <label for="instr" class="colname">Beschrijf wat je wil: vorm, maat, stenen en kleuren.</label>
+        <textarea id="instr">dino van 26 cm, rand SS20 jet, gevuld met luipaard SS12 topaz en jet</textarea>
+        <div class="row">
+          <button class="btn primary" id="btnDraw">Tekenen</button>
+          <button class="btn" id="btnVariant" title="Teken de laatste vormen opnieuw in een andere uitvoering">Andere variant</button>
+          <label class="chk"><input type="checkbox" id="replace"> Vervang wat er al staat</label>
+        </div>
+        <div class="live" id="instrLive" aria-live="polite"></div>
+        <p class="note" id="instrNote"></p>
+        <p class="lbl">Voorbeelden</p>
+        <div class="chips" id="examples"></div>
+        <details class="sub"><summary>Wat kan ik allemaal vragen?</summary>
+          <ul class="help">
+            <li>Bijna 800 vormen in meerdere uitvoeringen: vlinder, vlinder 2 ... vlinder 13, of zeg "andere vlinder". Knop Andere variant wisselt de laatste vorm.</li>
+            <li>Kleurmotieven: "vlinder in kleur", "monarchvlinder", "flamingo in kleur", "regenboog in kleur" krijgen hun eigen steenkleuren.</li>
+            <li>Tekst: zet de tekst tussen aanhalingstekens of zeg "naam Roxy". Lettertype: blokletters, glamour, klassiek, rond, script, sierlijk handschrift. Zeg "als lijn" voor één rij stenen.</li>
+            <li>Rand en vulling apart: "roze vlinder met gouden rand", "rand SS20 jet, gevuld met luipaard".</li>
+            <li>Plaats ten opzichte van het vorige: eronder, erboven, ernaast, links ervan, erin. Grootte: half zo groot, even groot, over de hele breedte.</li>
+            <li>Aantallen en schikking: 5 sterren, drie harten onder elkaar, 8 vlinders verspreid, in elke hoek een ster, krans van 12 bloemen.</li>
+            <li>Grootte in woorden: klein, groot, heel groot. Of in cm: 20 cm, 30 x 15 cm, elk 4 cm.</li>
+            <li>Kleuren: meer dan 140 steenkleuren met gewone woorden (bordeaux, mint, petrol, roségoud, oudroze, neon roze...). Elke kleur bestaat ook in AB: zeg "roze ab".</li>
+            <li>Meerdere kleuren op een lijn: "golflijn roze en wit afwisselend", "golflijn in regenboog".</li>
+            <li>Meerdere kleuren: "gevuld met rood, roze en wit door elkaar", "van roze naar paars", "regenboog".</li>
+            <li>Twee randen: "rand SS30 gold met binnenrand SS12 crystal".</li>
+            <li>Stof en werkvlak: "op zwarte stof", "werkvlak 60 x 40 cm".</li>
+            <li>Stenen: SS4 tot SS48, rivoli 12 tot 27 mm, parels, druppels 8x13, navettes, ovale, vierkante en rechthoekige stenen, hartstenen.</li>
+            <li>Vulling: gevuld, contour, ringen, raster, chaos (gemengde maten), strooien, verloop van SS30 naar SS10.</li>
+            <li>Patronen: luipaard, zebra, schubben, stippen, dambord, ruitjes, chevron, strepen, mengeling 30 %.</li>
+            <li>Opbouw: krans van 8 ..., rij van 5 ..., links en rechts, gespiegeld, gedraaid 30, franje, rand rondom, over het hele vlak.</li>
+            <li>Plaats: links, rechts, boven, onder, linksboven, op 12, 8 cm.</li>
+            <li>Meerdere dingen: scheid ze met een puntkomma of een nieuwe regel.</li>
+          </ul>
+        </details>
+      </div>
+    </details>
+
+    <details open>
+      <summary>Vormen</summary>
+      <div class="blk">
+        <div class="kinds" id="galKinds"></div>
+        <input type="search" id="shapeSearch" placeholder="Zoek: dino, veer, vleugel, kroon..." aria-label="Vorm zoeken">
+        <div class="chips" id="shapeCats"></div>
+        <div class="gallery" id="gallery"></div>
+        <p class="note" id="shapePicked"></p>
+        <p class="note simple-only">Tik een vorm aan: ze komt in het midden met de gekozen steen en kleur.</p>
+        <div class="row adv"><button class="btn" id="shapeCenter">In het midden zetten</button><button class="btn" id="shapeTool">Zelf tekenen met kader</button></div>
+        <p class="lbl">Tekst of naam</p>
+        <input type="text" id="txtIn" maxlength="40" placeholder="bv. ROXY" aria-label="Tekst">
+        <div class="field"><label for="txtFont">Lettertype</label><select id="txtFont"></select></div>
+        <label class="chk"><input type="checkbox" id="txtLine"> Letters volgen met één rij stenen</label>
+        <div class="row"><button class="btn" id="txtPlace">Tekst plaatsen</button><button class="btn adv" id="txtBox">Tekst met kader</button></div>
+        <p class="note" id="txtNote"></p>
+      </div>
+    </details>
+
+    <details>
+      <summary>Afbeelding natekenen in strass</summary>
+      <div class="blk">
+        <p class="note">Laad een logo, tekening of foto. Het wordt omgezet naar een vorm die je met stenen vult, of naar kleurvlakken met de juiste steenkleuren.</p>
+        <input type="file" id="trFile" accept="image/*">
+        <p class="note" id="trLoad">Ook grote foto's en afbeeldingen kunnen (ze worden automatisch verkleind tot wat nodig is).</p>
+        <canvas id="trPrev" width="320" height="200" hidden></canvas>
+        <div class="field"><label for="trMode">Manier</label><select id="trMode"><option value="sil">Silhouet (één vorm)</option><option value="col">Per kleur (kleurvlakken)</option><option value="line">Lijntekening (één rij stenen op de lijnen)</option></select></div>
+        <div class="field trSil adv"><label for="trPol">Wat is de vorm?</label><select id="trPol"><option value="auto">Automatisch</option><option value="dark">Donkere delen</option><option value="light">Lichte delen</option></select></div>
+        <div class="field trSil adv"><label for="trThr">Drempel</label><input type="range" id="trThr" min="10" max="245" value="128"></div>
+        <label class="chk trSil adv"><input type="checkbox" id="trAuto" checked> Drempel automatisch</label>
+        <div class="field trCol" hidden><label for="trK">Aantal kleuren (2 tot 30)</label><input type="number" id="trK" min="2" max="30" value="8"></div>
+        <label class="chk trCol" hidden><input type="checkbox" id="trMerge" checked> Kleuren met dezelfde steen samenvoegen</label>
+        <div class="field adv"><label for="trDet">Detail</label><input type="range" id="trDet" min="1" max="7" value="4"></div>
+        <div class="field"><label for="trW">Breedte op kostuum (cm)</label><input type="number" id="trW" min="2" max="300" value="20"></div>
+        <div class="field adv"><label for="trName">Naam</label><input type="text" id="trName" maxlength="40" placeholder="bv. logo"></div>
+        <div class="mapping trCol" id="trMap" hidden></div>
+        <label class="chk trCol" hidden><input type="checkbox" id="trEdge" checked> Rand rond elke kleurzone</label>
+        <label class="chk adv"><input type="checkbox" id="trSave" checked> Bewaren bij Eigen vormen</label>
+        <div class="row"><button class="btn primary" id="trGo" disabled>Natekenen in strass</button></div>
+        <p class="note" id="trNote">Stenen en kleuren komen uit Rand en vulling hieronder (bij Per kleur kiest de site de steenkleur per vlak).</p>
+      </div>
+    </details>
+
+    <details open class="adv">
+      <summary>Rand en vulling van vormen</summary>
+      <div class="blk">
+        <div class="sublbl"><label class="chk"><input type="checkbox" id="oOn" checked> Rand</label></div>
+        <div class="field"><label for="oT">Steen</label><select id="oT" class="tsel"></select></div>
+        <div class="field"><label for="oC">Kleur</label><select id="oC" class="csel"></select></div>
+        <div class="field"><label for="oRows">Aantal rijen</label><input type="number" id="oRows" min="1" max="8" value="1"></div>
+        <div class="field"><label for="oOrient">Richting vormstenen</label><select id="oOrient"><option value="langs">Langs de lijn</option><option value="buiten">Punt naar buiten</option><option value="binnen">Punt naar binnen</option><option value="recht">Allemaal rechtop</option></select></div>
+        <label class="chk"><input type="checkbox" id="oDetails" checked> Binnenlijnen van de vorm ook volgen</label>
+        <div class="sublbl"><label class="chk"><input type="checkbox" id="fOn" checked> Vulling</label></div>
+        <div class="field"><label for="fStyle">Vulwijze</label><select id="fStyle">
+          <option value="contour">Contour (volgt de vorm)</option><option value="hex">Honingraat (regelmatig)</option><option value="grid">Recht raster</option>
+          <option value="rings">Ringen vanuit het midden</option><option value="chaos">Chaos (gemengde maten, vol)</option><option value="scatter">Strooien (los verspreid)</option></select></div>
+        <div class="field"><label for="fT">Steen</label><select id="fT" class="tsel"></select></div>
+        <div class="field"><label for="fT2">Verloop of mix tot</label><select id="fT2" class="tsel" data-none="1"></select></div>
+        <div class="field"><label for="fPat">Kleurpatroon</label><select id="fPat"></select></div>
+        <div class="field"><label for="fC">Kleur 1</label><select id="fC" class="csel"></select></div>
+        <div class="field"><label for="fC2">Kleur 2</label><select id="fC2" class="csel"></select></div>
+        <div class="field"><label for="fMix">Aandeel kleur 2 (%)</label><input type="number" id="fMix" min="0" max="100" value="30"></div>
+        <div class="field"><label for="fPatS">Patroongrootte (mm)</label><input type="number" id="fPatS" min="4" max="300" value="20"></div>
+        <div class="field"><label for="fPatA">Patroonhoek (graden)</label><input type="number" id="fPatA" min="-180" max="180" value="0"></div>
+        <div class="field"><label for="fDens">Dichtheid strooien (%)</label><input type="number" id="fDens" min="2" max="100" value="25"></div>
+        <button class="btn" id="redoLast">Laatste vorm opnieuw met deze instellingen</button>
+        <p class="note">Deze instellingen gelden voor Tekenen (als je niets anders zegt) en voor Vorm tekenen met kader.</p>
+      </div>
+    </details>
+
+    <details class="adv">
+      <summary>Steen om zelf te plaatsen</summary>
+      <div class="blk">
+        <div id="typePick"></div>
+        <div class="swatches" id="swatches"></div>
+        <p class="colname" id="curName"></p>
+        <div class="field"><label for="curA">Hoek vormsteen (graden)</label><input type="number" id="curA" min="-180" max="180" step="5" value="0"></div>
+        <label class="chk"><input type="checkbox" id="curFollow" checked> Bij slepen: vormsteen volgt de lijn</label>
+        <p class="lbl">Eigen kleur toevoegen</p>
+        <div class="row"><input type="text" id="ncName" placeholder="Naam, bv. Ultra Pink" maxlength="40" aria-label="Naam eigen kleur" style="flex:1;min-width:120px"><input type="color" id="ncHex" value="#ff4fa3" aria-label="Kleur" style="width:52px"></div>
+        <div class="row"><label class="chk"><input type="checkbox" id="ncAb"> AB-glans</label><button class="btn" id="ncAdd">Toevoegen</button></div>
+        <div class="chips" id="ncList"></div>
+      </div>
+    </details>
+
+    <details class="adv">
+      <summary>Wissen per kleur of steen</summary>
+      <div class="blk">
+        <div class="row"><button class="btn" id="wSel">Selectie wissen</button><button class="btn" id="wOverlap">Overlap opruimen</button></div>
+        <div class="field"><label for="wColor">Alle stenen in kleur</label><select id="wColor" class="csel"></select></div>
+        <button class="btn" id="wColorBtn">Die kleur wissen</button>
+        <div class="field"><label for="wType">Alle stenen van type</label><select id="wType" class="tsel"></select></div>
+        <button class="btn" id="wTypeBtn">Dat type wissen</button>
+        <div class="row"><button class="btn danger" id="wAll">Alles wissen</button></div>
+        <p class="note warn" id="wConfirm" hidden>Klik nog eens om echt alles te wissen.</p>
+        <p class="note">De gum zit bij de knoppen boven het werkvlak, met grootte en filter. Alles kan je ongedaan maken.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>Werkvlak en stof</summary>
+      <div class="blk">
+        <div class="field"><label for="dW">Breedte (cm)</label><input type="number" id="dW" min="5" max="300" step="1"></div>
+        <div class="field"><label for="dH">Hoogte (cm)</label><input type="number" id="dH" min="5" max="300" step="1"></div>
+        <div class="field adv"><label for="gap">Tussenruimte (mm)</label><input type="number" id="gap" min="0" max="5" step="0.1"></div>
+        <div class="field"><label for="fabric">Stofkleur</label><input type="color" id="fabric"></div>
+        <div class="field adv"><label for="snap">Magneet raster</label><select id="snap"><option value="0">Uit</option><option value="1">1 mm</option><option value="5">5 mm</option><option value="10">1 cm</option></select></div>
+        <div class="row"><label class="chk"><input type="checkbox" id="showGrid" checked> Raster</label></div>
+      </div>
+    </details>
+
+    <details class="adv">
+      <summary>Kostuumfoto als achtergrond</summary>
+      <div class="blk">
+        <input type="file" id="bgFile" accept="image/*">
+        <div class="field"><label for="bgW">Breedte foto (cm)</label><input type="number" id="bgW" min="1" max="500" step="0.5" value="40"></div>
+        <label for="bgOp" class="colname">Zichtbaarheid</label>
+        <input type="range" id="bgOp" min="0" max="100" value="85">
+        <div class="row"><button class="btn" id="bgCal">Schaal met 2 punten</button><button class="btn" id="bgMove">Foto verschuiven</button><button class="btn" id="bgRemove">Weghalen</button></div>
+        <p class="note" id="bgNote">Schaal met 2 punten: klik twee punten op de foto waarvan je de echte afstand kent (bv. naden of een lat op de foto).</p>
+      </div>
+    </details>
+  </aside>
+
+  <div class="stagewrap">
+    <div class="toolbar" role="toolbar" aria-label="Gereedschap">
+      <button class="tb" data-tool="select" title="Vorm aantikken om aan te passen (V)">Aanpassen</button>
+      <button class="tb on" data-tool="place" title="Plaatsen (B)">Plaatsen</button>
+      <button class="tb adv" data-tool="line" title="Rechte lijn (L)">Lijn</button>
+      <button class="tb adv" data-tool="shape" title="Vorm met kader (F)">Vorm</button>
+      <button class="tb" data-tool="erase" title="Gum (E)">Gum</button>
+      <button class="tb adv" data-tool="paint" title="Kleur wisselen (K)">Kleur wisselen</button>
+      <button class="tb adv" data-tool="pick" title="Pipet (I)">Pipet</button>
+      <button class="tb adv" data-tool="pan" title="Verschuiven (H of spatie)">Hand</button>
+      <span class="sep adv"></span>
+      <label class="tbl adv" for="sym">Spiegelen</label>
+      <select id="sym" class="tbsel adv"><option value="none">Geen</option><option value="x">Links-rechts</option><option value="y">Boven-onder</option><option value="xy">Vier kwarten</option><option value="r3">Rond 3</option><option value="r4">Rond 4</option><option value="r5">Rond 5</option><option value="r6">Rond 6</option><option value="r8">Rond 8</option><option value="r12">Rond 12</option></select>
+      <span class="sep"></span>
+      <button class="tb" id="undo" title="Ongedaan maken (Ctrl+Z)">Terug</button>
+      <button class="tb" id="redo" title="Opnieuw (Ctrl+Y)">Opnieuw</button>
+      <span class="sep"></span>
+      <button class="tb wipe" id="wipeAll" title="Alles wissen (kan ongedaan gemaakt worden)">Alles wissen</button>
+    </div>
+    <div class="optbar" id="optbar"></div>
+    <div class="canvasbox" id="edBox">
+      <canvas id="ed"></canvas>
+      <canvas id="edfx"></canvas>
+      <div class="snack" id="snack" hidden><span id="snackTxt"></span><button class="tb" id="snackUndo" type="button">Ongedaan maken</button></div>
+      <div class="selbar" id="selbar" hidden>
+        <span id="selInfo"></span>
+        <button class="tb" data-sel="rotL" title="Draai links">↺ 15°</button>
+        <button class="tb" data-sel="rotR" title="Draai rechts">↻ 15°</button>
+        <button class="tb" data-sel="flipX" title="Spiegel links-rechts">⇋</button>
+        <button class="tb" data-sel="flipY" title="Spiegel boven-onder">⇵</button>
+        <button class="tb" data-sel="bigger" title="Groter">Groter</button>
+        <button class="tb" data-sel="smaller" title="Kleiner">Kleiner</button>
+        <button class="tb" data-sel="dup" title="Dupliceren (Ctrl+D)">Dupliceren</button>
+        <button class="tb" data-sel="color" title="Gekozen kleur toepassen">Kleur</button>
+        <button class="tb" data-sel="type" title="Gekozen steen toepassen">Steen</button>
+        <button class="tb" data-sel="del" title="Verwijderen (Delete)">Wissen</button>
+        <button class="tb" data-sel="none" title="Niets selecteren (Esc)">Klaar</button>
+      </div>
+    </div>
+    <div class="statusbar"><span id="posInfo">x 0,0 cm · y 0,0 cm</span><span id="toolHint"></span><span class="sp" id="countInfo">0 stenen</span><button class="tb" id="zOut" aria-label="Uitzoomen">−</button><button class="tb" id="zIn" aria-label="Inzoomen">+</button><button class="tb" id="zFit">Passend</button></div>
+  </div>
+</main>
+
+<!-- ======= FOTO ======= -->
+<main class="pane" id="pane-foto" hidden>
+  <aside class="ctrl">
+    <div class="blk">
+      <p class="lbl">Foto of tekening</p>
+      <input type="file" id="phFile" accept="image/*">
+      <p class="note">Een logo, tekening of motief met duidelijke vlakken werkt het best.</p>
+      <div class="field"><label for="phW">Breedte op kostuum (cm)</label><input type="number" id="phW" min="3" max="200" value="25"></div>
+      <div class="field"><label for="phK">Aantal kleuren</label><input type="number" id="phK" min="2" max="30" value="8"></div>
+      <div class="field"><label for="phMode">Werkwijze</label><select id="phMode"><option value="both">Rand en vulling</option><option value="fill">Alleen vullen</option><option value="contour">Alleen rand</option></select></div>
+      <div class="field"><label for="phFillSS">Steen vulling</label><select id="phFillSS"></select></div>
+      <div class="field"><label for="phEdgeSS">Steen rand</label><select id="phEdgeSS"></select></div>
+      <div class="field"><label for="phSmooth">Vereenvoudigen</label><input type="range" id="phSmooth" min="0" max="3" value="1"></div>
+      <label class="chk"><input type="checkbox" id="phSkipBg" checked> Achtergrond overslaan (wordt stof)</label>
+      <div class="row"><button class="btn primary" id="phRun" disabled>Maak strassvoorstel</button></div>
+      <p class="note" id="phNote">Kies eerst een afbeelding.</p>
+    </div>
+    <div class="blk" id="phMapBlk" hidden>
+      <p class="lbl">Kleuren in de foto en gekozen steen</p>
+      <div class="mapping" id="phMap"></div>
+      <button class="btn" id="phRerun">Opnieuw berekenen</button>
+    </div>
+    <div class="blk" id="phAdvBlk" hidden>
+      <p class="lbl">Zo pak je het aan</p>
+      <div class="advice" id="phAdvice"></div>
+      <div class="row"><button class="btn primary" id="phToDesign">Zet in ontwerp</button></div>
+    </div>
+  </aside>
+  <div class="stagewrap">
+    <div class="statusbar"><span>Foto zichtbaar</span><input type="range" id="phOverlay" min="0" max="100" value="25" aria-label="Foto zichtbaar"><span class="sp" id="phCount"></span></div>
+    <div class="canvasbox" id="phBox"><canvas id="phCanvas"></canvas></div>
+  </div>
+</main>
+
+<!-- ======= PROJECTIE ======= -->
+<main class="pane" id="pane-proj" hidden>
+  <aside class="ctrl">
+    <details open><summary>Werkwijze</summary>
+      <ol class="help">
+        <li>Sluit de projector aan, sleep deze pagina naar dat scherm en klik op Volledig scherm.</li>
+        <li>Zet Kalibreren aan en meet het gele vierkant met een lat. Pas de schaal aan tot het precies 10 cm is.</li>
+        <li>Zet de projector zo recht mogelijk voor het kostuum, anders vervormt het patroon.</li>
+        <li>Werk stap voor stap: per steen en kleur. Andere stenen worden dan donker.</li>
+        <li>Groot kostuum? Zet Delen aan en werk deel per deel. De gele kruisjes helpen om aan te sluiten.</li>
+      </ol>
+    </details>
+    <div class="blk">
+      <p class="lbl">Schaal en positie</p>
+      <div class="row"><button class="btn" id="pCalib">Kalibreren</button><button class="btn" id="pFS">Volledig scherm</button></div>
+      <div class="field"><label for="pScale">Pixels per cm</label><input type="number" id="pScale" min="2" max="400" step="0.1"></div>
+      <input type="range" id="pScaleR" min="5" max="200" step="0.1" aria-label="Pixels per cm">
+      <div class="field"><label for="pRot">Draaien (graden)</label><input type="number" id="pRot" min="-180" max="180" step="0.5" value="0"></div>
+      <div class="row"><label class="chk"><input type="checkbox" id="pMirror"> Spiegelen</label><button class="btn" id="pCenter">Centreren</button></div>
+      <p class="note">Sleep in het beeld om te verschuiven. Pijltjes verschuiven, + en - schalen, [ en ] draaien.</p>
+    </div>
+    <div class="blk">
+      <p class="lbl">Stap voor stap</p>
+      <div class="row"><button class="btn" id="pStepPrev">Vorige</button><button class="btn primary" id="pStepNext">Volgende stap</button><button class="btn" id="pStepAll">Alles</button></div>
+      <p class="note" id="pStepInfo"></p>
+      <div class="field"><label for="pFT">Steen</label><select id="pFT"></select></div>
+      <div class="field"><label for="pFC">Kleur</label><select id="pFC"></select></div>
+    </div>
+    <div class="blk">
+      <p class="lbl">Delen voor grote kostuums</p>
+      <label class="chk"><input type="checkbox" id="pTiles"> Delen aan (wat op het scherm past)</label>
+      <div class="row"><button class="btn" id="pTilePrev">Vorig deel</button><button class="btn" id="pTileNext">Volgend deel</button></div>
+      <p class="note" id="pTileInfo"></p>
+    </div>
+    <div class="blk adv">
+      <p class="lbl">Weergave</p>
+      <div class="field"><label for="pMode">Omtrek</label><select id="pMode"><option value="white">Wit (meest contrast)</option><option value="color">Kleur van de steen</option></select></div>
+      <div class="field"><label for="pLine">Lijndikte (px)</label><input type="number" id="pLine" min="1" max="8" value="2"></div>
+      <label class="chk"><input type="checkbox" id="pLabels" checked> Maat in de steen</label>
+      <label class="chk"><input type="checkbox" id="pDim" checked> Andere stenen zwak tonen</label>
+      <p class="note" id="pCount"></p>
+    </div>
+    <div class="blk">
+      <p class="lbl">Sjabloon downloaden</p>
+      <div class="row"><button class="btn" id="svgT">Sjabloon 1:1 (SVG)</button><button class="btn" id="svgC">Kleurvoorbeeld (SVG)</button></div>
+      <p class="note">Afdrukken op 100 % of openen in projectorsoftware.</p>
+    </div>
+  </aside>
+  <div class="stagewrap">
+    <div class="canvasbox dark" id="projBox">
+      <canvas id="proj"></canvas>
+      <button class="fsclose" id="fsClose">Sluit volledig scherm</button>
+    </div>
+  </div>
+</main>
+
+<!-- ======= MATERIAAL ======= -->
+<main class="pane single" id="pane-mat" hidden>
+  <div class="wrap">
+    <h2 class="sec">Materiaal en kosten</h2>
+    <p class="note">Vul prijzen in zoals je ze koopt: per gros (144 stuks) voor kleine ronde stenen en parels, per stuk voor grote en vormstenen. Prijzen worden op dit toestel onthouden.</p>
+    <div class="row">
+      <div class="field inline"><label for="reserve">Reserve (%)</label><input type="number" id="reserve" min="0" max="100" value="10"></div>
+      <div class="field inline"><label for="perHour">Stenen per uur</label><input type="number" id="perHour" min="10" max="5000" value="400"></div>
+      <button class="btn" id="matCopy">Lijst kopiëren</button>
+      <button class="btn" id="matCsv">Download als CSV</button>
+    </div>
+    <div class="tablewrap"><table class="mat" id="matTable"></table></div>
+    <div class="cards" id="matSum"></div>
+  </div>
+</main>
+
+<!-- ======= PROJECTEN ======= -->
+<main class="pane single" id="pane-proj2" hidden>
+  <div class="wrap">
+    <h2 class="sec">Projecten</h2>
+    <p class="note">Je ontwerpen worden automatisch bewaard in deze browser. Wil je verder werken op een ander toestel? Download het project en open het daar.</p>
+    <div class="row">
+      <div class="field inline grow"><label for="pName">Naam huidig ontwerp</label><input type="text" id="pName" maxlength="60"></div>
+      <button class="btn primary" id="pjNew">Nieuw ontwerp</button>
+      <button class="btn" id="pjDup">Kopie maken</button>
+    </div>
+    <div class="row">
+      <button class="btn" id="pjExport">Download project (.strass)</button>
+      <label class="btn" for="pjImport">Project openen uit bestand</label><input type="file" id="pjImport" accept=".strass,.json,application/json" hidden>
+      <button class="btn" id="pjPng">Download afbeelding (PNG)</button>
+    </div>
+    <p class="note" id="pjNote"></p>
+    <div class="projlist" id="projList"></div>
+  </div>
+</main>
+<footer class="credits">Vormen: <a href="https://game-icons.net" target="_blank" rel="noopener">game-icons.net</a> (CC BY 3.0), <a href="https://github.com/twitter/twemoji" target="_blank" rel="noopener">Twemoji</a> en EmojiOne (CC BY 4.0), Font Awesome Free (CC BY 4.0), Material Design Icons, Material Symbols, MingCute, IconPark, Remix Icon en Noto Emoji (Apache 2.0), Phosphor, Tabler en Fluent (MIT). Lettertypes: Google Fonts (OFL). Steenmaten zijn gemiddelden; merken verschillen licht.</footer>
+</div>
+
+<script>
+/* toegang: de toepassing staat versleuteld in app.enc en gaat alleen open met de juiste code */
+(function(){
+  "use strict";
+  var V = '20261019e', C = window.crypto && crypto.subtle, $ = function(id){ return document.getElementById(id); };
+  var data = fetch('app.enc?v=' + V).then(function(r){ if (!r.ok) throw new Error('laden'); return r.arrayBuffer(); });
+  function b64(u){ var s = ''; u = new Uint8Array(u); for (var i = 0; i < u.length; i++) s += String.fromCharCode(u[i]); return btoa(s); }
+  function unb64(s){ var b = atob(s), u = new Uint8Array(b.length); for (var i = 0; i < b.length; i++) u[i] = b.charCodeAt(i); return u; }
+  function derive(code, salt){
+    return C.importKey('raw', new TextEncoder().encode('strass-atelier:' + code), 'PBKDF2', false, ['deriveKey'])
+      .then(function(base){ return C.deriveKey({name:'PBKDF2', salt:salt, iterations:400000, hash:'SHA-256'}, base, {name:'AES-GCM', length:256}, true, ['decrypt']); });
+  }
+  function open(getKey, remember){
+    return data.then(function(buf){
+      var b = new Uint8Array(buf), salt = b.subarray(0, 16), iv = b.subarray(16, 28);
+      return getKey(salt).then(function(key){
+        return C.decrypt({name:'AES-GCM', iv:iv}, key, b.subarray(28)).then(function(pt){
+          if (remember) C.exportKey('raw', key).then(function(raw){ try { localStorage.setItem('sa-key', b64(raw)); } catch(e) {} });
+          return new Response(new Blob([pt]).stream().pipeThrough(new DecompressionStream('gzip'))).text();
+        });
+      });
+    }).then(function(txt){
+      var files = JSON.parse(txt), i = 0;
+      (function next(){
+        if (i >= files.length) return;
+        var sc = document.createElement('script'); sc.src = URL.createObjectURL(new Blob([files[i++].s], {type:'text/javascript'}));
+        sc.onload = next; document.body.appendChild(sc);
+      })();
+    });
+  }
+  try { localStorage.removeItem('sa-ok'); } catch(e) {}
+  var saved = null; try { saved = localStorage.getItem('sa-key'); } catch(e) {}
+  if (saved) open(function(){ return C.importKey('raw', unb64(saved), 'AES-GCM', false, ['decrypt']); }, false)
+    .catch(function(){ try { localStorage.removeItem('sa-key'); } catch(e) {} $('gateCode').focus(); });
+  else setTimeout(function(){ $('gateCode').focus(); }, 0);
+  var busy = false;
+  $('gateForm').addEventListener('submit', function(e){
+    e.preventDefault(); if (busy) return; busy = true;
+    var btn = $('gateForm').querySelector('button'); btn.textContent = 'Even geduld...'; $('gateMsg').hidden = true;
+    open(function(salt){ return derive($('gateCode').value.trim(), salt); }, $('gateRemember').checked)
+      .catch(function(err){
+        $('gateMsg').textContent = err && err.message === 'laden' ? 'De site kon niet geladen worden. Probeer opnieuw.' : 'Die code klopt niet.';
+        $('gateMsg').hidden = false; $('gateCode').select();
+      })
+      .then(function(){ busy = false; btn.textContent = 'Openen'; });
+  });
+})();
+</script>
+</body>
+</html>
